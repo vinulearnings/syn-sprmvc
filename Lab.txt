@@ -1,3 +1,24 @@
+Lab 2 - continue in same application
+	Create a interface Connection with open and close methods
+	Create a class OracleConnection implments Connection (@Component annotation)
+	Create a class DeptDAO (@Component annotation)
+			private Connection con ;     //= new OracleConnection();
+	
+		public void insert(){
+			getCon().open();
+			System.out.println("insert the record to oracle");
+			getCon().close();
+		}
+	Test -> Null pointer exception
+	@Autowired for private Connection con ; 
+	Test -> open with oracle .. success
+	Create one more class SqlConnection implments Connection (@Component annotation)
+	Test -> Error, No unique bean (but found 2)
+	Add @qualifier annotation  for private Connection con ; 
+		@Qualifier(value="sql")-> value = bean name
+	Change qualifier to see both Connections invoked...
+
+----------------------------------------------------
 Eclipse => prefer-> modify jre and change it to jdk
 Lab 1 
 	Create maven project
