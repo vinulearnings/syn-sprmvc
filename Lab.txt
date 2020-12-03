@@ -9,6 +9,10 @@ Lab 2 - continue in same application
 			System.out.println("insert the record to oracle");
 			getCon().close();
 		}
+	Modify main method to invoke 
+		DeptDAO dao = ctx.getBean("deptDAO",DeptDAO.class);
+		dao.insert();
+	
 	Test -> Null pointer exception
 	@Autowired for private Connection con ; 
 	Test -> open with oracle .. success
