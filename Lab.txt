@@ -1,3 +1,93 @@
+Lab 3 - new maven project
+	POM ->  Context, JDBC, HSQLDB
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.9.RELEASE</version>
+			</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>5.2.9.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.5.1</version>
+		</dependency>
+
+		</dependencies>
+
+	Write demo.DeptDAO
+		package demo;
+		import javax.annotation.PostConstruct;
+		import javax.sql.DataSource;
+
+		import org.springframework.beans.factory.annotation.Autowired;
+		import org.springframework.jdbc.core.JdbcTemplate;
+		import org.springframework.stereotype.Component;
+		import org.springframework.stereotype.Service;
+		@Component(value="deptdao")
+		public class DeptDAO {
+			@Autowired
+			private DataSource ds;
+			
+			private JdbcTemplate template;
+
+			@PostConstruct
+			public void m1(){
+				template = new JdbcTemplate(getDs());
+			}
+			public void insert(int deptno, String dname, String loc){
+				
+				String sql = "insert into dept values (" + deptno +", '" + dname  + "','" + loc +"')";
+				System.out.println(" insert ot Deptdao invoked with " + sql);
+				template.execute(sql);
+			}
+
+			public DataSource getDs() {
+				return ds;
+			}
+
+			public void setDs(DataSource ds) {
+				this.ds = ds;
+			}
+		}
+
+	demo.Demo2Application.java
+		package demo;
+
+		import javax.sql.DataSource;
+
+
+		@Configuration
+		@ComponentScan(basePackages="demo")
+		public class Demo2Application {
+
+			@Bean
+			public DataSource ds(){
+				DriverManagerDataSource ds = new DriverManagerDataSource("jdbc:hsqldb:hsql://localhost/","SA","");
+				return ds;
+			}
+			
+			public static void main(String[] args) {
+				ApplicationContext context = new AnnotationConfigApplicationContext(Demo2Application.class);
+				DeptDAO dao = context.getBean("deptdao",DeptDAO.class);
+				dao.insert(10, "HR" , "Pune");
+			}
+
+		}
+
+	Start Database and Run client
+	to start database server - hsqldb\bin\runServer.bat
+	to start Database Manager(client) - hsqldb\bin\runManager.bat
+	
+	Test program
+	Write a method to retrieve data 
+---------------------------------------------------------------	
 Lab 2 - continue in same application
 	Create a interface Connection with open and close methods
 	Create a class OracleConnection implments Connection (@Component annotation)
