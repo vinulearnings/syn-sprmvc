@@ -1,0 +1,51 @@
+Eclipse => prefer-> modify jre and change it to jdk
+Lab 1 
+	Create maven project
+	Modify pom file
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>5.2.9.RELEASE</version>
+			</dependency>
+
+		</dependencies>
+
+	Create a Demo1Application.java
+		package demo;
+
+		@Configuration()
+		@ComponentScan(basePackages="demo")
+		public class Demo1Application {
+
+			public static void main(String[] args) {
+				// TODO Auto-generated method stub
+				ApplicationContext ctx  = new AnnotationConfigApplicationContext(Demo1Application.class);
+				System.out.println("Context Loaded .................................\n");
+				String[] beannames = ctx.getBeanDefinitionNames();
+				System.out.println(Arrays.toString(beannames));
+				
+				First first = ctx.getBean("myfirst",First.class);
+				first.m1();
+				First first1 = ctx.getBean("myfirst",First.class);
+				first1.m1();
+			}
+		}
+
+	Create First.java 
+		package demo;
+
+		@Component(value="myfirst")
+		@Scope(value="prototype")
+		public class First {
+			public First() {
+				System.out.println("First Constructor");
+			}
+			public void m1(){
+				System.out.println(" m1 of First ");
+			}
+		}
+
+-> Test, Change the scope - > singleton/prototype
+	And observe
+		When instance is created/how many 
